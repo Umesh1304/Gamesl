@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+    <div class="container">
+        <h1>Hangman Game</h1>
+        <div id="hangmanImage" class="hangman-image"></div>
+        <div id="wordToGuess"></div>
+        <p>Coder can only Guess:</p>
+        <input type="text" id="guessInput">
+        <button id="guessButton">Guess</button>
+        <button id="restartButton">Restart</button>
+        <p id="guessesRemaining">Guesses Remaining: <span id="remainingGuesses"></span></p>
+        <p id="message"></p>
+    </div>
+
+    <audio id="correctSound">
+        <source src="./audio/Correct Answer Sound Effect(M4A_128K).m4a" type="audio/mpeg">
+    </audio>
+    <audio id="incorrectSound">
+        <source src="./audio/LOUDEST INCORRECT BUZZER (i wanted to type in lowercase but ill type in all caps)(M4A_128K).m4a" type="audio/mpeg">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
