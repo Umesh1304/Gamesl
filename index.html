@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hangman Game</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <audio id="backgroundMusic" autoplay loop>
+    <audio id="backgroundMusic" autoplay loop muted>
         <source src="./audio/_Happy_Background.m4a" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-    
+
     <div class="container">
         <h1>Hangman Game</h1>
         <div id="hangmanImage" class="hangman-image">
-            <div id="smileyThink" class="smiley think"></div>
+            <!-- Add alt text for accessibility -->
+            <div id="smileyThink" class="smiley think" alt="Thinking Smiley"></div>
         </div>
         <div id="wordToGuess"></div>
         <p>Coder can only Guess::</p>
@@ -44,7 +47,13 @@
     <audio id="incorrectSound">
         <source src="./audio/LOUDEST INCORRECT BUZZER (i wanted to type in lowercase but ill type in all caps)(M4A_128K).m4a" type="audio/mpeg">
     </audio>
-
+    <audio id="firecrackerSound">
+        <source src="./audio/Fireworks Sound Effect.m4a" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    
+    
     <script src="script.js"></script>
 </body>
+
 </html>

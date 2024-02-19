@@ -13,7 +13,78 @@ document.addEventListener('DOMContentLoaded', function () {
     // Display the modal initially
     instructionModal.style.display = "block";  // Add this line
 
-    const wordList = ['hangman', 'javascript', 'computer', 'programming', 'developer', 'algorithm'];
+    const wordList = [
+        'hangman', 
+        'javascript', 
+        'computer', 
+        'programming', 
+        'developer', 
+        'algorithm', 
+        'variable', 
+        'function', 
+        'loop', 
+        'array', 
+        'object', 
+        'string', 
+        'boolean', 
+        'integer', 
+        'float', 
+        'conditional', 
+        'iteration', 
+        'debugging', 
+        'algorithm', 
+        'interface', 
+        'database', 
+        'framework', 
+        'backend', 
+        'frontend', 
+        'version', 
+        'repository', 
+        'iteration', 
+        'recursion', 
+        'parameter', 
+        'argument', 
+        'syntax', 
+        'declaration', 
+        'assignment', 
+        'comparison', 
+        'concatenation', 
+        'interpretation', 
+        'execution', 
+        'asynchronous', 
+        'synchronous', 
+        'iteration', 
+        'recursion', 
+        'asymptotic', 
+        'efficiency', 
+        'optimization', 
+        'compiler', 
+        'interpreter', 
+        'syntax', 
+        'semantics', 
+        'declaration', 
+        'initialization', 
+        'compilation', 
+        'interpretation', 
+        'runtime', 
+        'type', 
+        'static', 
+        'dynamic', 
+        'polymorphism', 
+        'inheritance', 
+        'encapsulation', 
+        'abstraction', 
+        'interface', 
+        'implementation', 
+        'module', 
+        'package', 
+        'library', 
+        'API', 
+        'testing', 
+        'debugging', 
+        'refactoring'
+    ];
+    
     let chosenWord = '';
     let guessesRemaining = 6;
     let guessedLetters = [];
@@ -104,17 +175,12 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             updateDisplay();
             playCorrectSound();
+            checkWin(); // Check if the word has been completely guessed
         } else {
             // Incorrect guess
             guessesRemaining--;
             updateGuessesRemaining();
             playIncorrectSound();
-        }
-
-        // Check for win
-        if (!wordDisplay.includes('_')) {
-            messageDisplay.textContent = 'Congratulations! You won!';
-            backgroundMusic.pause();
         }
 
         // Check for lose
@@ -149,6 +215,64 @@ document.addEventListener('DOMContentLoaded', function () {
         incorrectSound.play();
     }
 
+    // Function to create the sky cracker effect
+    function createSkyCrackerEffect() {
+        const colors = ['#FFD700', '#FF6347', '#00FFFF', '#00FF00']; // Add more colors as needed
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+
+        for (let i = 0; i < 50; i++) { // Adjust the number of crackers as needed
+            const skyCracker = document.createElement('div');
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+            skyCracker.classList.add('sky-cracker');
+            skyCracker.style.backgroundColor = randomColor;
+            skyCracker.style.left = Math.random() * screenWidth + 'px';
+            skyCracker.style.top = Math.random() * screenHeight + 'px';
+            document.body.appendChild(skyCracker);
+
+            setTimeout(() => {
+                skyCracker.remove();
+            }, 2000); // Adjust duration as needed
+        }
+    }
+
+    // Function to check if the word has been completely guessed
+    function checkWin() {
+        if (!wordDisplay.includes('_')) {
+            // Display "Yo Won" message at the top
+            const winMessage = document.createElement('div');
+            winMessage.textContent = 'You Won!';
+            winMessage.classList.add('glowing-text'); // Apply glowing effect
+            winMessage.classList.add('glowing-color'); 
+            document.body.insertBefore(winMessage, document.body.firstChild);
+
+            messageDisplay.textContent = 'Congratulations! You Won!';
+            backgroundMusic.pause();
+            createSkyCrackerEffect(); // Create the sky cracker effect
+        }
+    }
+    function checkWin() {
+        if (!wordDisplay.includes('_')) {
+            // Display "Yo Won" message at the top
+            const winMessage = document.createElement('div');
+            winMessage.textContent = 'Yo Won!';
+            winMessage.classList.add('glowing-text'); // Apply glowing effect
+            document.body.insertBefore(winMessage, document.body.firstChild);
+    
+            messageDisplay.textContent = 'Congratulations! You Won!';
+            messageDisplay.classList.add('congratulations');
+            backgroundMusic.pause();
+            createSkyCrackerEffect(); // Create the sky cracker effect
+            playFireworksSound(); // Play fireworks sound
+        }
+    }
+    
+    // Function to play the fireworks sound
+    function playFireworksSound() {
+        firecrackerSound.currentTime = 0; // Reset sound to beginning
+        firecrackerSound.play(); // Play the fireworks sound
+    }
     // Start the game initially
     startGame();
 });
