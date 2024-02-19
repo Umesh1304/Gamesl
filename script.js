@@ -1,4 +1,18 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const okButton = document.getElementById('okButton');
+    const instructionModal = document.getElementById('instructionModal');
+
+    // Function to close the modal
+    function closeModal() {
+        instructionModal.style.display = "none";
+    }
+
+    // Event listener for the OK button
+    okButton.addEventListener('click', closeModal);
+
+    // Display the modal initially
+    instructionModal.style.display = "block";  // Add this line
+
     const wordList = ['hangman', 'javascript', 'computer', 'programming', 'developer', 'algorithm'];
     let chosenWord = '';
     let guessesRemaining = 6;
@@ -19,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let isMuted = false;
 
     // Mute Button
-    muteButton.addEventListener('click', function() {
+    muteButton.addEventListener('click', function () {
         if (isMuted) {
             backgroundMusic.play();
             correctSound.volume = 1;

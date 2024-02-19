@@ -17,6 +17,10 @@ body {
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     background-color: #f0f0f0;
 }
+.modal {
+    display: block; /* or 'flex', 'grid', etc., based on your styling */
+    /* ... other styling rules ... */
+}
 
 /* Heading Styles */
 h1 {
