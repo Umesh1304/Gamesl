@@ -1,84 +1,140 @@
 document.addEventListener('DOMContentLoaded', function () {
-    var words = ["program", "javascript", "programming", "computer", "algorithm", "developer","coding","flutter","dart","python",
-                  "analyst","input","output","java","sql","database","monitor"];
+    const wordList = ['hangman', 'javascript', 'computer', 'programming', 'developer', 'algorithm'];
+    let chosenWord = '';
+    let guessesRemaining = 6;
+    let guessedLetters = [];
+    let wordDisplay = [];
 
-    var wordToGuess = words[Math.floor(Math.random() * words.length)];
-    var guessedWord = "_".repeat(wordToGuess.length);
+    const hangmanImage = document.getElementById('hangmanImage');
+    const wordToGuess = document.getElementById('wordToGuess');
+    const guessInput = document.getElementById('guessInput');
+    const guessButton = document.getElementById('guessButton');
+    const restartButton = document.getElementById('restartButton');
+    const guessesRemainingDisplay = document.getElementById('remainingGuesses');
+    const messageDisplay = document.getElementById('message');
+    const correctSound = document.getElementById('correctSound');
+    const incorrectSound = document.getElementById('incorrectSound');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const muteButton = document.getElementById('muteButton');
+    let isMuted = false;
 
-    var remainingGuesses = 6;
-    var guessedLetters = [];
+    // Mute Button
+    muteButton.addEventListener('click', function() {
+        if (isMuted) {
+            backgroundMusic.play();
+            correctSound.volume = 1;
+            incorrectSound.volume = 1;
+            muteButton.textContent = 'Mute';
+        } else {
+            backgroundMusic.pause();
+            correctSound.volume = 0;
+            incorrectSound.volume = 0;
+            muteButton.textContent = 'Unmute';
+        }
+        isMuted = !isMuted;
+    });
 
-    document.getElementById('wordToGuess').textContent = guessedWord;
-    document.getElementById('remainingGuesses').textContent = remainingGuesses;
+    // Function to start or restart the game
+    function startGame() {
+        // Choose a random word from the wordList
+        chosenWord = wordList[Math.floor(Math.random() * wordList.length)];
+        guessedLetters = [];
+        wordDisplay = [];
 
-    document.getElementById('guessButton').addEventListener('click', function () {
-        var guessInput = document.getElementById('guessInput').value.toLowerCase();
+        // Initialize word display
+        for (let i = 0; i < chosenWord.length; i++) {
+            wordDisplay.push('_');
+        }
 
-        if (guessInput.length !== 1 || !/[a-z]/.test(guessInput)) {
-            document.getElementById('message').textContent = "Please enter a valid letter.";
+        // Update the display
+        updateDisplay();
+
+        // Reset guesses remaining
+        guessesRemaining = 6;
+        updateGuessesRemaining();
+
+        // Clear message display
+        messageDisplay.textContent = '';
+
+        // Play background music
+        if (!isMuted) {
+            backgroundMusic.play();
+        }
+    }
+
+    // Function to update the word display
+    function updateDisplay() {
+        wordToGuess.textContent = wordDisplay.join(' ');
+    }
+
+    // Function to update remaining guesses display
+    function updateGuessesRemaining() {
+        guessesRemainingDisplay.textContent = guessesRemaining;
+    }
+
+    // Function to check if the guessed letter is in the word
+    function checkGuess(letter) {
+        if (guessedLetters.includes(letter)) {
+            messageDisplay.textContent = 'You already guessed that letter!';
             return;
         }
 
-        if (guessedLetters.includes(guessInput)) {
-            document.getElementById('message').textContent = "You've already guessed that letter.";
-            return;
-        }
+        guessedLetters.push(letter);
 
-        guessedLetters.push(guessInput);
-
-        if (wordToGuess.includes(guessInput)) {
-            for (var i = 0; i < wordToGuess.length; i++) {
-                if (wordToGuess[i] === guessInput) {
-                    guessedWord = guessedWord.substr(0, i) + guessInput + guessedWord.substr(i + 1);
+        if (chosenWord.includes(letter)) {
+            // Correct guess
+            for (let i = 0; i < chosenWord.length; i++) {
+                if (chosenWord[i] === letter) {
+                    wordDisplay[i] = letter;
                 }
             }
-
-            document.getElementById('wordToGuess').textContent = guessedWord;
-
-            if (!guessedWord.includes('_')) {
-                document.getElementById('message').textContent = "Congratulations! You guessed the word.";
-                document.getElementById('guessButton').disabled = true;
-                return;
-            } else {
-                document.getElementById('correctSound').play();
-            }
+            updateDisplay();
+            playCorrectSound();
         } else {
-            remainingGuesses--;
-            document.getElementById('remainingGuesses').textContent = remainingGuesses;
-            if (remainingGuesses === 0) {
-                document.getElementById('message').textContent = "Game over! The word was: " + wordToGuess;
-                document.getElementById('guessButton').disabled = true;
-                return;
-            } else {
-                document.getElementById('incorrectSound').play();
-                updateHangmanImage(remainingGuesses);
-            }
+            // Incorrect guess
+            guessesRemaining--;
+            updateGuessesRemaining();
+            playIncorrectSound();
         }
 
-        document.getElementById('message').textContent = "";
-    });
+        // Check for win
+        if (!wordDisplay.includes('_')) {
+            messageDisplay.textContent = 'Congratulations! You won!';
+            backgroundMusic.pause();
+        }
 
-    document.getElementById('restartButton').addEventListener('click', function () {
-        wordToGuess = words[Math.floor(Math.random() * words.length)];
-        guessedWord = "_".repeat(wordToGuess.length);
-        remainingGuesses = 6;
-        guessedLetters = [];
-
-        document.getElementById('wordToGuess').textContent = guessedWord;
-        document.getElementById('remainingGuesses').textContent = remainingGuesses;
-        document.getElementById('message').textContent = "";
-        document.getElementById('guessInput').value = "";
-        document.getElementById('guessButton').disabled = false;
-        resetHangmanImage();
-    });
-
-    function updateHangmanImage(remainingGuesses) {
-        var hangmanImage = document.getElementById('hangmanImage');
-        hangmanImage.className = 'hangman-image hangman-image-' + remainingGuesses;
+        // Check for lose
+        if (guessesRemaining === 0) {
+            messageDisplay.textContent = `You lost! The word was "${chosenWord}".`;
+            backgroundMusic.pause();
+        }
     }
 
-    function resetHangmanImage() {
-        var hangmanImage = document.getElementById('hangmanImage');
-        hangmanImage.className = 'hangman-image';
+    // Event listener for guess button
+    guessButton.addEventListener('click', function () {
+        const guess = guessInput.value.toLowerCase();
+        if (guess.length === 1 && guess.match(/[a-z]/i)) {
+            checkGuess(guess);
+        } else {
+            messageDisplay.textContent = 'Please enter a valid single letter.';
+        }
+        guessInput.value = '';
+    });
+
+    // Event listener for restart button
+    restartButton.addEventListener('click', startGame);
+
+    // Correct and Incorrect Sounds
+    function playCorrectSound() {
+        correctSound.currentTime = 0;
+        correctSound.play();
     }
+
+    function playIncorrectSound() {
+        incorrectSound.currentTime = 0;
+        incorrectSound.play();
+    }
+
+    // Start the game initially
+    startGame();
 });

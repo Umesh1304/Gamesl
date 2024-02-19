@@ -7,17 +7,35 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    
     <div class="container">
         <h1>Hangman Game</h1>
-        <div id="hangmanImage" class="hangman-image"></div>
+        <div id="hangmanImage" class="hangman-image">
+            <div id="smileyThink" class="smiley think"></div>
+        </div>
         <div id="wordToGuess"></div>
-        <p>Coder can only Guess:</p>
+        <p>Coder can only Guess::</p>
         <input type="text" id="guessInput">
         <button id="guessButton">Guess</button>
         <button id="restartButton">Restart</button>
+        <button id="muteButton">Mute</button>
         <p id="guessesRemaining">Guesses Remaining: <span id="remainingGuesses"></span></p>
         <p id="message"></p>
+    </div>
+    <audio id="backgroundMusic" autoplay loop>
+        <source src="./audio/_Happy_Background.m4a" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    
+
+    <div id="instructionModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Instructions</h2>
+            <p>This is the Hangman game. You have to guess the word by entering one letter at a time.</p>
+            <p>If the letter is correct, it will appear in its place. If not, you lose a guess.</p>
+            <p>You have 6 chances to guess the word correctly. Good luck!</p>
+            <button id="okButton">OK</button>
+        </div>
     </div>
 
     <audio id="correctSound">
