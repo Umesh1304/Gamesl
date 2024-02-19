@@ -2,19 +2,21 @@ document.addEventListener('DOMContentLoaded', function () {
     const okButton = document.getElementById('okButton');
     const instructionModal = document.getElementById('instructionModal');
 
-    // Function to close the modal
+    
     function closeModal() {
         instructionModal.style.display = "none";
     }
 
-    // Event listener for the OK button
+    
     okButton.addEventListener('click', closeModal);
 
-    // Display the modal initially
-    instructionModal.style.display = "block";  // Add this line
+    
+    instructionModal.style.display = "block";  
 
     const wordList = [
-        'hangman', 
+        'java', 
+        'python',
+        'ruby',
         'javascript', 
         'computer', 
         'programming', 
@@ -103,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const muteButton = document.getElementById('muteButton');
     let isMuted = false;
 
-    // Mute Button
+    
     muteButton.addEventListener('click', function () {
         if (isMuted) {
             backgroundMusic.play();
@@ -119,45 +121,45 @@ document.addEventListener('DOMContentLoaded', function () {
         isMuted = !isMuted;
     });
 
-    // Function to start or restart the game
+    
     function startGame() {
-        // Choose a random word from the wordList
+       
         chosenWord = wordList[Math.floor(Math.random() * wordList.length)];
         guessedLetters = [];
         wordDisplay = [];
 
-        // Initialize word display
+       
         for (let i = 0; i < chosenWord.length; i++) {
             wordDisplay.push('_');
         }
 
-        // Update the display
+        
         updateDisplay();
 
-        // Reset guesses remaining
+        
         guessesRemaining = 6;
         updateGuessesRemaining();
 
-        // Clear message display
+        
         messageDisplay.textContent = '';
 
-        // Play background music
+        
         if (!isMuted) {
             backgroundMusic.play();
         }
     }
 
-    // Function to update the word display
+    
     function updateDisplay() {
         wordToGuess.textContent = wordDisplay.join(' ');
     }
 
-    // Function to update remaining guesses display
+    
     function updateGuessesRemaining() {
         guessesRemainingDisplay.textContent = guessesRemaining;
     }
 
-    // Function to check if the guessed letter is in the word
+    
     function checkGuess(letter) {
         if (guessedLetters.includes(letter)) {
             messageDisplay.textContent = 'You already guessed that letter!';
@@ -175,22 +177,22 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             updateDisplay();
             playCorrectSound();
-            checkWin(); // Check if the word has been completely guessed
+            checkWin(); 
         } else {
-            // Incorrect guess
+            
             guessesRemaining--;
             updateGuessesRemaining();
             playIncorrectSound();
         }
 
-        // Check for lose
+       
         if (guessesRemaining === 0) {
             messageDisplay.textContent = `You lost! The word was "${chosenWord}".`;
             backgroundMusic.pause();
         }
     }
 
-    // Event listener for guess button
+   
     guessButton.addEventListener('click', function () {
         const guess = guessInput.value.toLowerCase();
         if (guess.length === 1 && guess.match(/[a-z]/i)) {
@@ -201,10 +203,8 @@ document.addEventListener('DOMContentLoaded', function () {
         guessInput.value = '';
     });
 
-    // Event listener for restart button
     restartButton.addEventListener('click', startGame);
 
-    // Correct and Incorrect Sounds
     function playCorrectSound() {
         correctSound.currentTime = 0;
         correctSound.play();
@@ -215,13 +215,13 @@ document.addEventListener('DOMContentLoaded', function () {
         incorrectSound.play();
     }
 
-    // Function to create the sky cracker effect
+    
     function createSkyCrackerEffect() {
-        const colors = ['#FFD700', '#FF6347', '#00FFFF', '#00FF00']; // Add more colors as needed
+        const colors = ['#FFD700', '#FF6347', '#00FFFF', '#00FF00'];
         const screenWidth = window.innerWidth;
         const screenHeight = window.innerHeight;
 
-        for (let i = 0; i < 50; i++) { // Adjust the number of crackers as needed
+        for (let i = 0; i < 50; i++) { 
             const skyCracker = document.createElement('div');
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
 
@@ -233,46 +233,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
             setTimeout(() => {
                 skyCracker.remove();
-            }, 2000); // Adjust duration as needed
+            }, 2000); 
         }
     }
 
-    // Function to check if the word has been completely guessed
+   
     function checkWin() {
         if (!wordDisplay.includes('_')) {
-            // Display "Yo Won" message at the top
+           
             const winMessage = document.createElement('div');
             winMessage.textContent = 'You Won!';
-            winMessage.classList.add('glowing-text'); // Apply glowing effect
+            winMessage.classList.add('glowing-text'); 
             winMessage.classList.add('glowing-color'); 
             document.body.insertBefore(winMessage, document.body.firstChild);
 
             messageDisplay.textContent = 'Congratulations! You Won!';
             backgroundMusic.pause();
-            createSkyCrackerEffect(); // Create the sky cracker effect
+            createSkyCrackerEffect(); 
         }
     }
     function checkWin() {
         if (!wordDisplay.includes('_')) {
-            // Display "Yo Won" message at the top
+            
             const winMessage = document.createElement('div');
-            winMessage.textContent = 'Yo Won!';
-            winMessage.classList.add('glowing-text'); // Apply glowing effect
-            document.body.insertBefore(winMessage, document.body.firstChild);
-    
             messageDisplay.textContent = 'Congratulations! You Won!';
             messageDisplay.classList.add('congratulations');
             backgroundMusic.pause();
-            createSkyCrackerEffect(); // Create the sky cracker effect
-            playFireworksSound(); // Play fireworks sound
-        }
+            createSkyCrackerEffect(); 
+            playFireworksSound(); 
     }
     
-    // Function to play the fireworks sound
+    
     function playFireworksSound() {
-        firecrackerSound.currentTime = 0; // Reset sound to beginning
-        firecrackerSound.play(); // Play the fireworks sound
+        firecrackerSound.currentTime = 0; 
+        firecrackerSound.play(); 
     }
-    // Start the game initially
+}
     startGame();
 });
